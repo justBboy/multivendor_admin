@@ -1,9 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import PageReducer from "../features/pageTransitions";
+import VendorsReducer from "../features/vendors/VendorSlice";
+import AdminsReducer from "../features/admins/AdminsSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    page: PageReducer,
+    vendors: VendorsReducer,
+    admins: AdminsReducer
   },
 });
 
