@@ -1,11 +1,13 @@
 import { Backdrop, ClickAwayListener, Fade, makeStyles, Modal, ModalProps } from '@material-ui/core';
 import React from 'react';
 
-interface CustomModalProps extends ModalProps{
+interface CustomModalProps{
     open: boolean;
     setOpen: (val: boolean) => void; 
     width?: number;
     beforeClose?: () => void;
+    modalProps?: ModalProps;
+    disableClickAway?: boolean;
 }
 
 const useStyle = makeStyles((theme) => ({
@@ -22,9 +24,10 @@ const useStyle = makeStyles((theme) => ({
 
 const CustomModal:React.FC<CustomModalProps> = (props) => {
     const classes = useStyle();
+    const {disableClickAway} = props;
     return (
          <Modal 
-            {...props}
+            {...props.modalProps}
             open={props.open} 
             onClose={() => {
                 props.beforeClose && props.beforeClose()
@@ -38,12 +41,19 @@ const CustomModal:React.FC<CustomModalProps> = (props) => {
          >
              <Fade in={props.open}>
                 <div className={classes.paper}>
-                    <ClickAwayListener onClickAway={() => {
-                        props.beforeClose && props.beforeClose()
-                        props.setOpen(false)
-                    }}>
-                        {props.children}
-                    </ClickAwayListener>
+                    {
+                        !disableClickAway
+                        ?
+                        <ClickAwayListener onClickAway={() => {
+                            props.beforeClose && props.beforeClose()
+                            props.setOpen(false)
+                        }}>
+                            {props.children}
+                        </ClickAwayListener>
+                        :
+                        props.children
+                    }
+
                 </div>
              </Fade>
 

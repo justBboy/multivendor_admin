@@ -9,8 +9,10 @@ export const MAIL = "/mail";
 export const FEEDBACKS = "/feedbacks";
 export const REPORTS = "/reports";
 export const ROLES = "/roles";
+export const APP_MANAGEMENT = "/app_management";
 //////
 export const ADMINS = "/admins";
 export const ADMINS_CREATE = "/admins/create";
 export const ADMINS_EDIT = "/admins/edit/:id";
 
+export const LOGIN = "/login";

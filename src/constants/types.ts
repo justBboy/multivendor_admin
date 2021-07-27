@@ -18,4 +18,12 @@ export type adminType = {
     phone: string;
     avatar: string;
     role: string;
+} 
+
+export type categoryType = {
+    id: string;
+    title: string;
+    imageUrl: string;
+    imageName: string;
+    description: string;
 }

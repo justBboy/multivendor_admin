@@ -4,10 +4,9 @@ import * as ROUTES from "./routes";
 import BusinessIcon from '@material-ui/icons/BusinessOutlined';
 import TimelineIcon from '@material-ui/icons/TimelineOutlined';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOnOutlined';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CommentIcon from '@material-ui/icons/CommentOutlined';
-import ReportIcon from '@material-ui/icons/ReportOutlined';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import AppsIcon from '@material-ui/icons/AppsOutlined';
 
 export type navigationType = {
     name: string;
@@ -27,29 +26,24 @@ export const navigation = [
         icon: BusinessIcon
     },
     {
+        name: "App Mng.",
+        route: ROUTES.APP_MANAGEMENT,
+        icon: AppsIcon
+    },
+    {
         name: "Admins",
         route: ROUTES.ADMINS,
         icon: PeopleIcon
     },
     {
-        name: "Products",
+        name: "Categories",
         route: ROUTES.PRODUCTS,
         icon: MonetizationOnIcon
-    },
-    {
-        name: "Mail",
-        route: ROUTES.MAIL,
-        icon: MailOutlineIcon
     },
     {
         name: "Feedback",
         route: ROUTES.FEEDBACKS,
         icon: CommentIcon
-    },
-    {
-        name: "Report",
-        route: ROUTES.REPORTS,
-        icon: ReportIcon
     }
 ]
 

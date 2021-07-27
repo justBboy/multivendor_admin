@@ -1,4 +1,4 @@
-import { Avatar, Button, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Avatar, Button, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
 import { DataGrid, GridCellParams, GridColDef } from '@material-ui/data-grid';
 import clsx from "clsx";
 import React, { useState } from 'react';
@@ -6,8 +6,10 @@ import * as ROUTES from "../constants/routes";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccountOutlined';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { setSelectedAdmin } from '../features/admins/AdminsSlice';
 import PersonIcon  from '@material-ui/icons/PersonOutlineOutlined';
+import ConfirmModal from '../components/ConfirmModal';
 
 interface AdminsProps{
     
@@ -57,6 +59,12 @@ const Admins:React.FC<AdminsProps> = ({}) => {
     const [search, setSearch] = useState("");
     const history = useHistory();
     const dispatch = useDispatch();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+
+    const handleDelete = () => {
+        console.log("delete")
+    }
     const columns:GridColDef[] = [
         {field: "id", headerName: "id", width: 70},
         {field: "avatar", hide: true},
@@ -77,7 +85,19 @@ const Admins:React.FC<AdminsProps> = ({}) => {
             else{
                 return <PersonIcon color="disabled" titleAccess="Regular Admin" />
             }
-        }}
+        }},
+        {
+            field: "del", headerName: "Del", width: 120, renderCell: (params: GridCellParams) => {
+                return (
+                    <IconButton onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteModalOpen(true)
+                        }}>
+                        <DeleteOutlineIcon style={{color: "#a33"}} />
+                    </IconButton>
+                )
+            }
+        }
     ]
     const handleCreateRoute = () => {
         history.push(ROUTES.ADMINS_CREATE);
@@ -89,6 +109,7 @@ const Admins:React.FC<AdminsProps> = ({}) => {
     }
     return (
          <div className={classes.container}>
+             <ConfirmModal open={deleteModalOpen} setOpen={setDeleteModalOpen} onCancel={() => {setDeleteModalOpen(false)}} onOk={handleDelete} />
              <div className={classes.flex}>
                  <Paper elevation={0} className={`${classes.searchContainer} box-shadow`}>
                      <input type="text" placeholder="Search" value={search} onChange={(e) => {setSearch(e.target.value)}} className={classes.searchInput} />

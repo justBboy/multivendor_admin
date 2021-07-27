@@ -115,11 +115,10 @@ const useStyle = makeStyles(theme => ({
         }
     },
     createBtn: {
-        marginLeft: theme.spacing(3),
-        marginRight: theme.spacing(3),
-        width: 180,
-        borderRadius: 10,
-        marginTop: theme.spacing(8.5)
+        width: "95%",
+        margin: "auto",
+        borderRadius: 5,
+        marginTop: theme.spacing(2.5)
     },
     addPhotoIcon: {
         transition: theme.transitions.create(["fontSize"], {
@@ -132,12 +131,12 @@ const useStyle = makeStyles(theme => ({
 
 const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit }) => {
     const classes = useStyle();
-    const { register, trigger, reset } = useForm();
+    const { register, trigger, reset, handleSubmit } = useForm();
     const params = useParams();
     const selectedEdit = useSelector(selectSelectedVendor);
-    const [previewSource, setPreviewSource] = useState<string | ArrayBuffer | null>();
-    let inputRef = useRef<HTMLInputElement | null>(null);
     const history = useHistory();
+    /* const [previewSource, setPreviewSource] = useState<string | ArrayBuffer | null>();
+    let inputRef = useRef<HTMLInputElement | null>(null);
 
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,14 +162,14 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
             console.log(err);
             handleLogoRemove();
         }
+    } */
+
+    const handleCreate = (data: any) => {
+        console.log(data)
     }
 
-    const handleCreate = () => {
-        console.log("create")
-    }
-
-    const handleUpdate = () => {
-        console.log("update")
+    const handleUpdate = (data: any) => {
+        console.log(data)
     }
 
     useEffect(() => {
@@ -183,7 +182,7 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
     return (
         <div className={classes.container}>
             <Paper className={clsx(classes.formContainer, classes.boxShadow)} elevation={0}>
-                <input type="file" accept="image/*" onChange={handleFileInputChange} ref={inputRef} hidden />
+                {/* <input type="file" accept="image/*" onChange={handleFileInputChange} ref={inputRef} hidden /> */}
                 <div className={classes.inputsContainer}>
                     <div className={classes.inputContainer}>
                         <TextField {...register("name", { required: true })}
@@ -211,7 +210,7 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
                                 ...base,
                                 background: "#fff",
                             })
-                        }} placeholder="Select Product" />
+                        }} placeholder="Select Product Category" />
                     </div>
                     <div className={classes.inputContainer}>
                         <TextField {...register("email", { required: true })}
@@ -233,7 +232,14 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
                                 className: classes.input
                             }} variant="outlined" label={create ? "Phone Number" : ""} />
                     </div>
-                    <div className={classes.inputContainer}>
+                    {
+                        create
+                            ?
+                            <Button variant="outlined" className={classes.createBtn} onClick={handleSubmit(handleCreate)}>Create</Button>
+                            :
+                            <Button variant="outlined" className={classes.createBtn} onClick={handleSubmit(handleUpdate)}>Update</Button>
+                    }
+                    {/* <div className={classes.inputContainer}>
                         <Typography variant="body1" style={{ color: "#ccc" }}>Location: </Typography>
                         <div style={{ display: "flex", marginTop: 10 }}>
                             <TextField {...register("longitude", { required: true })}
@@ -251,9 +257,18 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
                                     className: classes.inputSm
                                 }} variant="outlined" label={create ? "Latitude" : ""} />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
-                <div className={classes.right}>
+                {
+                    edit 
+                    &&
+                    <div className={classes.right}>
+                        <Paper elevation={0} className={clsx(classes.logoContainer, classes.boxShadow)}>
+                            <Avatar className={classes.avatar} alt="Vendor Logo" src={selectedEdit?.icon} />    
+                        </Paper>
+                    </div>
+                }
+                {/* <div className={classes.right}>
                     <Paper elevation={0} className={clsx(classes.logoContainer, classes.boxShadow)}>
                         <div onClick={() => { inputRef.current?.click() }} className={classes.clickOverlay}>
                             <AddAPhotoIcon style={{ color: "#ddd" }} className={classes.addPhotoIcon} />
@@ -266,14 +281,8 @@ const VendorCreateUpdate: React.FC<VendorCreateUpdateProps> = ({ create, edit })
                                 <Avatar className={classes.avatar} alt="Vendor Logo" src={previewSource ? previewSource.toString() : selectedEdit?.icon} />
                         }
                     </Paper>
-                    {
-                        create 
-                        ?
-                        <Button variant="outlined" className={classes.createBtn} onClick={handleCreate}>Create</Button>
-                        :
-                        <Button variant="outlined" className={classes.createBtn} onClick={handleUpdate}>Update</Button>
-                    }
-                </div>
+                    
+                </div> */}
             </Paper>
         </div>
     )

@@ -1,4 +1,4 @@
-import { Avatar, Button, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Avatar, Button, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import clsx from "clsx";
 import { DataGrid, GridCellParams, GridColDef } from "@material-ui/data-grid";
@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import * as ROUTES from "../constants/routes";
 import Select from "react-select";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import ConfirmModal from '../components/ConfirmModal';
 import { useDispatch } from 'react-redux';
 import { changePage } from '../features/pageTransitions';
 import { setSelectedVendor } from '../features/vendors/VendorSlice';
@@ -14,8 +16,6 @@ import { setSelectedVendor } from '../features/vendors/VendorSlice';
 interface VendorsProps {
 
 }
-
-
 
 const rows = [
     { id: 1, vendorName: "Oastag Devs", longitude: 1.7, latitude: 10.211, product: "Computer Electronics: ", email: "oastagdevs@gmail.com", phoneNumber: "0247506391", location: "Sunyani", icon: "https://uilogos.co/img/logotype/treva.png" },
@@ -54,7 +54,8 @@ const useStyle = makeStyles(theme => ({
     },
     createBtn: {
         marginLeft: "auto",
-        boxShadow: "-1px 4px 12px -7px rgba(0,0,0,0.75);"
+        boxShadow: "-1px 4px 12px -7px rgba(0,0,0,0.75);",
+        backgroundColor: "#fff"
     },
     searchContainer: {
         display: "flex",
@@ -92,6 +93,12 @@ const Vendors: React.FC<VendorsProps> = ({ }) => {
     const [search, setSearch] = useState("");
     const history = useHistory();
     const dispatch = useDispatch();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+
+    const handleDelete = () => {
+        console.log("delete")
+    }
     const columns: GridColDef[] = [
         { field: "id", headerName: "id", width: 130 },
         {
@@ -109,6 +116,14 @@ const Vendors: React.FC<VendorsProps> = ({ }) => {
         { field: "email", headerName: "Email", width: 170 },
         { field: "phoneNumber", headerName: "Phone Number", width: 170 },
         { field: "location", headerName: "Location", width: 170 },
+    {field: "del", headerName: "Del", width: 120, renderCell: (params: GridCellParams) => (
+       <IconButton onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteModalOpen(true)
+                        }}>
+                        <DeleteOutlineIcon style={{color: "#a33"}} />
+                    </IconButton>
+    )}
     ]
     const handleCreateRoute = () => {
         console.log("create")
@@ -122,6 +137,7 @@ const Vendors: React.FC<VendorsProps> = ({ }) => {
     }
     return (
         <div className={classes.container}>
+            <ConfirmModal open={deleteModalOpen} setOpen={setDeleteModalOpen} onCancel={() => {setDeleteModalOpen(false)}} onOk={handleDelete} />
             <div className={classes.actionsContainer}>
                 <Paper elevation={0} className={clsx(classes.searchContainer, classes.boxShadow)}>
                     <input type="text" placeholder="Search" className={classes.searchInput} value={search} onChange={(e) => setSearch(e.target.value)} />

@@ -6,3 +6,6 @@ export {default as Products} from "./Products";
 export {default as Admins} from "./Admins";
 export {default as AdminsCreate} from "./AdminsCreate";
 export {default as AdminsEdit} from "./AdminsEdit";
+export {default as Feedbacks} from "./Feedbacks";
+export {default as AppManagement} from "./AppManagement";
+export {default as Login} from "./Login";

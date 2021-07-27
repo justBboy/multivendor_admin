@@ -1,12 +1,13 @@
-import { AppBar, Avatar, Badge, IconButton, InputAdornment, makeStyles, TextField, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Avatar, Badge, ClickAwayListener, Fade, IconButton, InputAdornment, makeStyles, Popper, TextField, Toolbar, Typography } from '@material-ui/core';
 import React from 'react';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import SearchIcon from '@material-ui/icons/Search';
 import { drawerWidth } from './Sidebar';
 import { useSelector } from 'react-redux';
 import { selectPage } from '../features/pageTransitions';
+import { useState } from 'react';
 
-interface TopbarProps{
+interface TopbarProps {
 }
 
 export const TOPBAR_HEIGHT = 60;
@@ -32,9 +33,8 @@ const useStyle = makeStyles((theme) => ({
         color: "#6666644",
         boxShadow: "-1px 4px 12px -7px rgba(0,0,0,0.75);",
         padding: theme.spacing(0.5),
-        fontSize: 20,
+        fontSize: 24,
         borderRadius: theme.spacing(5),
-        
     },
     iconButton: {
         transition: theme.transitions.create(['transform'], {
@@ -72,36 +72,41 @@ const useStyle = makeStyles((theme) => ({
     },
     headerText: {
         color: "#ccc"
+    },
+    accountPopper: {
+        width: 150,
+        padding: 15
     }
 }))
 
-const Topbar:React.FC<TopbarProps> = ({}) => {
+const Topbar: React.FC<TopbarProps> = ({ }) => {
     const classes = useStyle();
-    const screenLocation = useSelector(selectPage); 
+    const screenLocation = useSelector(selectPage);
+    const [openAccountPopup, setOpenAccountPopup] = useState(false);
     return (
-         <AppBar elevation={0} className={classes.appBar}>
+        <AppBar elevation={0} className={classes.appBar}>
             <Toolbar className={classes.container}>
-                <div style={{width: drawerWidth}}>
+                <div style={{ width: drawerWidth }}>
                     <Typography variant="h5" className={classes.logo}>Admin Logo</Typography>
                 </div>
-                <div style={{marginRight: "auto"}}>
+                <div style={{ marginRight: "auto" }}>
                     <Typography className={classes.headerText} variant="h6">{screenLocation}</Typography>
                 </div>
                 <div className={classes.flex}>
                     <div className={classes.searchContainer}>
-                        <TextField variant="outlined" placeholder="Search app" classes={{root: classes.inputContainer}}  InputProps={{
+                        <TextField variant="outlined" placeholder="Search app" classes={{ root: classes.inputContainer }} InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <SearchIcon style={{fontSize: 18}} />
+                                    <SearchIcon style={{ fontSize: 18 }} />
                                 </InputAdornment>
                             ),
-                            style: {height: 30, padding: 5, width: "100%"}
-                        }}  />
+                            style: { height: 30, padding: 5, width: "100%" }
+                        }} />
                     </div>
-                    <IconButton className={classes.iconButton} style={{position: "relative"}} title="Notifications">
-                         <Badge badgeContent={2} color="error">
-                             <NotificationsNoneIcon className={classes.icon} />
-                        </Badge>                       
+                    <IconButton className={classes.iconButton} style={{ position: "relative" }} title="Notifications">
+                        <Badge badgeContent={2} color="error">
+                            <NotificationsNoneIcon className={classes.icon} />
+                        </Badge>
                     </IconButton>
                     {/* <IconButton className={classes.iconButton} title="Add Vendor">
                         <PersonAddIcon className={classes.icon} />                        
@@ -111,11 +116,21 @@ const Topbar:React.FC<TopbarProps> = ({}) => {
                             <CommentIcon className={classes.icon} />                        
                         </Badge>
                     </IconButton> */}
-                    <div className={classes.avatar}>
+                    <div onClick={() => { setOpenAccountPopup(true) }} className={classes.avatar}>
                         <Avatar title="Kwame Mj" />
                     </div>
+                    <ClickAwayListener onClickAway={() => { setOpenAccountPopup(false) }}>
+                        <Popper open={openAccountPopup} transition>
+                            {({ TransitionProps }) => (
+                                <Fade {...TransitionProps} timeout={350}>
+                                    <div className={classes.accountPopper}>The content of the Popper.</div>
+                                </Fade>
+                            )}
+
+                        </Popper>
+                    </ClickAwayListener>
                 </div>
-            </Toolbar> 
+            </Toolbar>
         </AppBar>
     )
 }
