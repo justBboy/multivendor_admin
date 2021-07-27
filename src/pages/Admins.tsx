@@ -22,7 +22,10 @@ const useStyle = makeStyles(theme => ({
     tableContainer: {
         width: "100%",
         minHeight: "68vh",
-        margin: "auto"
+        margin: "auto",
+        "& > div": {
+            height: "68vh"
+        }
     },
     flex: {
         display: "flex",
